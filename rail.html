@@ -13,15 +13,41 @@
 <style>
 	
 		@media screen 
-		and (min-device-width: 1500px) { 
-			.gal-image {
-				max-width:20%
+		and (min-device-width: 1200px) { 
+			img {
+				max-width:70% !important
 			}
 		}
 		@media screen 
-		and (max-device-width: 1500px) { 
-			.gal-image {
-				max-width:40%
+		and (max-device-width: 1200px) { 
+			img {
+				max-width:50% !important
+			}
+		}
+
+		@media screen 
+		and (min-device-width: 1800px) { 
+			.proj.sample {
+				background-size: 40% !important
+			}
+		}
+		@media screen 
+		and (min-device-width: 1400px)
+		and (max-device-width: 1800px) { 
+			.proj.sample {
+				background-size: 50% !important
+			}
+		}
+		@media screen 
+		and (max-device-width: 1400px) { 
+			.proj.sample {
+				background-size: 60% !important
+			}
+		}
+		@media screen 
+		and (max-device-width: 400px) { 
+			.proj.sample {
+				background-size: 50% !important
 			}
 		}
 
@@ -38,7 +64,7 @@
 
 	<div class="hero-section service">
 		<div class="hero-flex">
-			<div style="background-image:url(rail/images/header.png);background-size: 50%;background-position-x:center" class="proj sample"></div>
+			<div style="background-image:url(rail/images/header.png);background-position-x:center" class="proj sample"></div>
 			<div class="service-column">
 				<div class="move-up-on-load">
 					<p>design</p>
