@@ -426,8 +426,8 @@ p {
 	}
 	.service-column {
 		display: flex;
-		width: 50%;
-		height: 100%;
+		width: 100%;
+		height: auto;
 		padding: 0 3% 0 5%;
 		-webkit-box-align: center;
 		-webkit-align-items: center;
