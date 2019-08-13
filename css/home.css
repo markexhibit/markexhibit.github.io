@@ -153,6 +153,24 @@ body, pre {
 	margin-left: auto
 }
 
+/*iPhone 5,5s */
+
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+	.slider-content{
+		margin-top: 125px;
+	}
+	.projectButton {
+		width:100%;
+		text-align: center;
+	}
+	.projectSlider .slider-content .link{
+		margin-top: 60px;
+	}
+}
+
 @media (min-width:768px) {
 	.lead {
 		font-size: 21px
@@ -786,6 +804,7 @@ h2 {
 	max-width: 1170px
 }
 .projectSlider .featured-img {
+	opacity:.75;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
@@ -899,6 +918,7 @@ h2 {
 		padding-right: 30px
 	}
 	.projectSlider .featured-img {
+		opacity:.75;
 		width: 80%
 	}
 }
@@ -926,7 +946,12 @@ h2 {
 		display: none
 	}
 	.projectSlider .slider-content .link {
-		margin-top: 30px
+		margin-top: 60px;
+	}
+
+	.projNumber {
+		margin-top: 50px !important;
+		padding-right: 30px;
 	}
 }
 .navLink{
