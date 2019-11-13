@@ -13,8 +13,8 @@
         "leftPunchRadius":["01D62418","8B0","5D0","8C0","F0","390"],
         "rightPunchRadius":["01D62418","8B0","5D0","8C0","F0","394"]
     },
-    "modValues":[2,21,1],
+    "modValues":[1.5,21,1],
     "defaults":[1,19,0],
     "pointerDefaults":[4,0.25,5,10,2,0.06,0.06],
-    "pointerMods":[7,0.25,9,15,4,1.5,1.5]
+    "pointerMods":[7,0.4,12,30,3.6,0.06,0.06]
 }
