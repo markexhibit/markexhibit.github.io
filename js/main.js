@@ -1,77 +1,7 @@
 ! function () {
     "use strict";
     var e, a = function (s, i) {
-        function r(e) {
-            return Math.floor(e)
-        }
 
-        function n() {
-            var e = T.params.autoplay,
-                a = T.slides.eq(T.activeIndex);
-            a.attr("data-swiper-autoplay") && (e = a.attr("data-swiper-autoplay") || T.params.autoplay), T.autoplayTimeoutId = setTimeout(function () {
-                T.params.loop ? (T.fixLoop(), T._slideNext(), T.emit("onAutoplay", T)) : T.isEnd ? i.autoplayStopOnLast ? T.stopAutoplay() : (T._slideTo(0), T.emit("onAutoplay", T)) : (T._slideNext(), T.emit("onAutoplay", T))
-            }, e)
-        }
-
-        function o(a, t) {
-            var s = e(a.target);
-            if (!s.is(t))
-                if ("string" == typeof t) s = s.parents(t);
-                else if (t.nodeType) {
-                var i;
-                return s.parents().each(function (e, a) {
-                    a === t && (i = t)
-                }), i ? t : void 0
-            }
-            if (0 !== s.length) return s[0]
-        }
-
-        function l(e, a) {
-            a = a || {};
-            var t = window.MutationObserver || window.WebkitMutationObserver,
-                s = new t(function (e) {
-                    e.forEach(function (e) {
-                        T.onResize(!0), T.emit("onObserverUpdate", T, e)
-                    })
-                });
-            s.observe(e, {
-                attributes: void 0 === a.attributes || a.attributes,
-                childList: void 0 === a.childList || a.childList,
-                characterData: void 0 === a.characterData || a.characterData
-            }), T.observers.push(s)
-        }
-
-        function p(e) {
-            e.originalEvent && (e = e.originalEvent);
-            var a = e.keyCode || e.charCode;
-            if (!T.params.allowSwipeToNext && (T.isHorizontal() && 39 === a || !T.isHorizontal() && 40 === a)) return !1;
-            if (!T.params.allowSwipeToPrev && (T.isHorizontal() && 37 === a || !T.isHorizontal() && 38 === a)) return !1;
-            if (!(e.shiftKey || e.altKey || e.ctrlKey || e.metaKey || document.activeElement && document.activeElement.nodeName && ("input" === document.activeElement.nodeName.toLowerCase() || "textarea" === document.activeElement.nodeName.toLowerCase()))) {
-                if (37 === a || 39 === a || 38 === a || 40 === a) {
-                    var t = !1;
-                    if (T.container.parents("." + T.params.slideClass).length > 0 && 0 === T.container.parents("." + T.params.slideActiveClass).length) return;
-                    var s = {
-                            left: window.pageXOffset,
-                            top: window.pageYOffset
-                        },
-                        i = window.innerWidth,
-                        r = window.innerHeight,
-                        n = T.container.offset();
-                    T.rtl && (n.left = n.left - T.container[0].scrollLeft);
-                    for (var o = [
-                            [n.left, n.top],
-                            [n.left + T.width, n.top],
-                            [n.left, n.top + T.height],
-                            [n.left + T.width, n.top + T.height]
-                        ], l = 0; l < o.length; l++) {
-                        var p = o[l];
-                        p[0] >= s.left && p[0] <= s.left + i && p[1] >= s.top && p[1] <= s.top + r && (t = !0)
-                    }
-                    if (!t) return
-                }
-                T.isHorizontal() ? (37 !== a && 39 !== a || (e.preventDefault ? e.preventDefault() : e.returnValue = !1), (39 === a && !T.rtl || 37 === a && T.rtl) && T.slideNext(), (37 === a && !T.rtl || 39 === a && T.rtl) && T.slidePrev()) : (38 !== a && 40 !== a || (e.preventDefault ? e.preventDefault() : e.returnValue = !1), 40 === a && T.slideNext(), 38 === a && T.slidePrev()), T.emit("onKeyPress", T, a)
-            }
-        }
 
         function d(e) {
             var a = 0,
@@ -132,6 +62,7 @@
         function m(e) {
             return 0 !== e.indexOf("on") && (e = e[0] !== e[0].toUpperCase() ? "on" + e[0].toUpperCase() + e.substring(1) : "on" + e), e
         }
+        
         if (!(this instanceof a)) return new a(s, i);
         var h = {
                 direction: "horizontal",
@@ -162,24 +93,7 @@
                     modifier: 1,
                     slideShadows: !0
                 },
-                flip: {
-                    slideShadows: !0,
-                    limitRotation: !0
-                },
-                cube: {
-                    slideShadows: !0,
-                    shadow: !0,
-                    shadowOffset: 20,
-                    shadowScale: .94
-                },
-                fade: {
-                    crossFade: !1
-                },
                 parallax: !1,
-                zoom: !1,
-                zoomMax: 3,
-                zoomMin: 1,
-                zoomToggle: !0,
                 scrollbar: null,
                 scrollbarHide: !0,
                 scrollbarDraggable: !1,
@@ -846,168 +760,6 @@
                 for (var e = [], a = 0; a < T.slides.length; a++) e.push(a);
                 T.removeSlide(e)
             }, T.effects = {
-                fade: {
-                    setTranslate: function () {
-                        for (var e = 0; e < T.slides.length; e++) {
-                            var a = T.slides.eq(e),
-                                t = a[0].swiperSlideOffset,
-                                s = -t;
-                            T.params.virtualTranslate || (s -= T.translate);
-                            var i = 0;
-                            T.isHorizontal() || (i = s, s = 0);
-                            var r = T.params.fade.crossFade ? Math.max(1 - Math.abs(a[0].progress), 0) : 1 + Math.min(Math.max(a[0].progress, -1), 0);
-                            a.css({
-                                opacity: r
-                            }).transform("translate3d(" + s + "px, " + i + "px, 0px)")
-                        }
-                    },
-                    setTransition: function (e) {
-                        if (T.slides.transition(e), T.params.virtualTranslate && 0 !== e) {
-                            var a = !1;
-                            T.slides.transitionEnd(function () {
-                                if (!a && T) {
-                                    a = !0, T.animating = !1;
-                                    for (var e = ["webkitTransitionEnd", "transitionend", "oTransitionEnd", "MSTransitionEnd", "msTransitionEnd"], t = 0; t < e.length; t++) T.wrapper.trigger(e[t])
-                                }
-                            })
-                        }
-                    }
-                },
-                flip: {
-                    setTranslate: function () {
-                        for (var a = 0; a < T.slides.length; a++) {
-                            var t = T.slides.eq(a),
-                                s = t[0].progress;
-                            T.params.flip.limitRotation && (s = Math.max(Math.min(t[0].progress, 1), -1));
-                            var i = t[0].swiperSlideOffset,
-                                r = -180 * s,
-                                n = r,
-                                o = 0,
-                                l = -i,
-                                p = 0;
-                            if (T.isHorizontal() ? T.rtl && (n = -n) : (p = l, l = 0, o = -n, n = 0), t[0].style.zIndex = -Math.abs(Math.round(s)) + T.slides.length, T.params.flip.slideShadows) {
-                                var d = T.isHorizontal() ? t.find(".swiper-slide-shadow-left") : t.find(".swiper-slide-shadow-top"),
-                                    u = T.isHorizontal() ? t.find(".swiper-slide-shadow-right") : t.find(".swiper-slide-shadow-bottom");
-                                0 === d.length && (d = e('<div class="swiper-slide-shadow-' + (T.isHorizontal() ? "left" : "top") + '"></div>'), t.append(d)), 0 === u.length && (u = e('<div class="swiper-slide-shadow-' + (T.isHorizontal() ? "right" : "bottom") + '"></div>'), t.append(u)), d.length && (d[0].style.opacity = Math.max(-s, 0)), u.length && (u[0].style.opacity = Math.max(s, 0))
-                            }
-                            t.transform("translate3d(" + l + "px, " + p + "px, 0px) rotateX(" + o + "deg) rotateY(" + n + "deg)")
-                        }
-                    },
-                    setTransition: function (a) {
-                        if (T.slides.transition(a).find(".swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left").transition(a), T.params.virtualTranslate && 0 !== a) {
-                            var t = !1;
-                            T.slides.eq(T.activeIndex).transitionEnd(function () {
-                                if (!t && T && e(this).hasClass(T.params.slideActiveClass)) {
-                                    t = !0, T.animating = !1;
-                                    for (var a = ["webkitTransitionEnd", "transitionend", "oTransitionEnd", "MSTransitionEnd", "msTransitionEnd"], s = 0; s < a.length; s++) T.wrapper.trigger(a[s])
-                                }
-                            })
-                        }
-                    }
-                },
-                cube: {
-                    setTranslate: function () {
-                        var a, t = 0;
-                        T.params.cube.shadow && (T.isHorizontal() ? (a = T.wrapper.find(".swiper-cube-shadow"), 0 === a.length && (a = e('<div class="swiper-cube-shadow"></div>'), T.wrapper.append(a)), a.css({
-                            height: T.width + "px"
-                        })) : (a = T.container.find(".swiper-cube-shadow"), 0 === a.length && (a = e('<div class="swiper-cube-shadow"></div>'), T.container.append(a))));
-                        for (var s = 0; s < T.slides.length; s++) {
-                            var i = T.slides.eq(s),
-                                r = 90 * s,
-                                n = Math.floor(r / 360);
-                            T.rtl && (r = -r, n = Math.floor(-r / 360));
-                            var o = Math.max(Math.min(i[0].progress, 1), -1),
-                                l = 0,
-                                p = 0,
-                                d = 0;
-                            s % 4 == 0 ? (l = 4 * -n * T.size, d = 0) : (s - 1) % 4 == 0 ? (l = 0, d = 4 * -n * T.size) : (s - 2) % 4 == 0 ? (l = T.size + 4 * n * T.size, d = T.size) : (s - 3) % 4 == 0 && (l = -T.size, d = 3 * T.size + 4 * T.size * n), T.rtl && (l = -l), T.isHorizontal() || (p = l, l = 0);
-                            var u = "rotateX(" + (T.isHorizontal() ? 0 : -r) + "deg) rotateY(" + (T.isHorizontal() ? r : 0) + "deg) translate3d(" + l + "px, " + p + "px, " + d + "px)";
-                            if (o <= 1 && o > -1 && (t = 90 * s + 90 * o, T.rtl && (t = 90 * -s - 90 * o)), i.transform(u), T.params.cube.slideShadows) {
-                                var c = T.isHorizontal() ? i.find(".swiper-slide-shadow-left") : i.find(".swiper-slide-shadow-top"),
-                                    m = T.isHorizontal() ? i.find(".swiper-slide-shadow-right") : i.find(".swiper-slide-shadow-bottom");
-                                0 === c.length && (c = e('<div class="swiper-slide-shadow-' + (T.isHorizontal() ? "left" : "top") + '"></div>'), i.append(c)), 0 === m.length && (m = e('<div class="swiper-slide-shadow-' + (T.isHorizontal() ? "right" : "bottom") + '"></div>'), i.append(m)), c.length && (c[0].style.opacity = Math.max(-o, 0)), m.length && (m[0].style.opacity = Math.max(o, 0))
-                            }
-                        }
-                        if (T.wrapper.css({
-                                "-webkit-transform-origin": "50% 50% -" + T.size / 2 + "px",
-                                "-moz-transform-origin": "50% 50% -" + T.size / 2 + "px",
-                                "-ms-transform-origin": "50% 50% -" + T.size / 2 + "px",
-                                "transform-origin": "50% 50% -" + T.size / 2 + "px"
-                            }), T.params.cube.shadow)
-                            if (T.isHorizontal()) a.transform("translate3d(0px, " + (T.width / 2 + T.params.cube.shadowOffset) + "px, " + -T.width / 2 + "px) rotateX(90deg) rotateZ(0deg) scale(" + T.params.cube.shadowScale + ")");
-                            else {
-                                var h = Math.abs(t) - 90 * Math.floor(Math.abs(t) / 90),
-                                    g = 1.5 - (Math.sin(2 * h * Math.PI / 360) / 2 + Math.cos(2 * h * Math.PI / 360) / 2),
-                                    f = T.params.cube.shadowScale,
-                                    v = T.params.cube.shadowScale / g,
-                                    w = T.params.cube.shadowOffset;
-                                a.transform("scale3d(" + f + ", 1, " + v + ") translate3d(0px, " + (T.height / 2 + w) + "px, " + -T.height / 2 / v + "px) rotateX(-90deg)")
-                            } var y = T.isSafari || T.isUiWebView ? -T.size / 2 : 0;
-                        T.wrapper.transform("translate3d(0px,0," + y + "px) rotateX(" + (T.isHorizontal() ? 0 : t) + "deg) rotateY(" + (T.isHorizontal() ? -t : 0) + "deg)")
-                    },
-                    setTransition: function (e) {
-                        T.slides.transition(e).find(".swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left").transition(e), T.params.cube.shadow && !T.isHorizontal() && T.container.find(".swiper-cube-shadow").transition(e)
-                    }
-                },
-                coverflow: {
-                    setTranslate: function () {
-                        for (var a = T.translate, t = T.isHorizontal() ? -a + T.width / 2 : -a + T.height / 2, s = T.isHorizontal() ? T.params.coverflow.rotate : -T.params.coverflow.rotate, i = T.params.coverflow.depth, r = 0, n = T.slides.length; r < n; r++) {
-                            var o = T.slides.eq(r),
-                                l = T.slidesSizesGrid[r],
-                                p = o[0].swiperSlideOffset,
-                                d = (t - p - l / 2) / l * T.params.coverflow.modifier,
-                                u = T.isHorizontal() ? s * d : 0,
-                                c = T.isHorizontal() ? 0 : s * d,
-                                m = -i * Math.abs(d),
-                                h = T.isHorizontal() ? 0 : T.params.coverflow.stretch * d,
-                                g = T.isHorizontal() ? T.params.coverflow.stretch * d : 0;
-                            Math.abs(g) < .001 && (g = 0), Math.abs(h) < .001 && (h = 0), Math.abs(m) < .001 && (m = 0), Math.abs(u) < .001 && (u = 0), Math.abs(c) < .001 && (c = 0);
-                            var f = "translate3d(" + g + "px," + h + "px," + m + "px)  rotateX(" + c + "deg) rotateY(" + u + "deg)";
-                            if (o.transform(f), o[0].style.zIndex = 1 - Math.abs(Math.round(d)), T.params.coverflow.slideShadows) {
-                                var v = T.isHorizontal() ? o.find(".swiper-slide-shadow-left") : o.find(".swiper-slide-shadow-top"),
-                                    w = T.isHorizontal() ? o.find(".swiper-slide-shadow-right") : o.find(".swiper-slide-shadow-bottom");
-                                0 === v.length && (v = e('<div class="swiper-slide-shadow-' + (T.isHorizontal() ? "left" : "top") + '"></div>'), o.append(v)), 0 === w.length && (w = e('<div class="swiper-slide-shadow-' + (T.isHorizontal() ? "right" : "bottom") + '"></div>'), o.append(w)), v.length && (v[0].style.opacity = d > 0 ? d : 0), w.length && (w[0].style.opacity = -d > 0 ? -d : 0)
-                            }
-                        }
-                        if (T.browser.ie) {
-                            T.wrapper[0].style.perspectiveOrigin = t + "px 50%"
-                        }
-                    },
-                    setTransition: function (e) {
-                        T.slides.transition(e).find(".swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left").transition(e)
-                    }
-                }
-            }, T.lazy = {
-                initialImageLoaded: !1,
-                loadImageInSlide: function (a, t) {
-                    if (void 0 !== a && (void 0 === t && (t = !0), 0 !== T.slides.length)) {
-                        var s = T.slides.eq(a),
-                            i = s.find("." + T.params.lazyLoadingClass + ":not(." + T.params.lazyStatusLoadedClass + "):not(." + T.params.lazyStatusLoadingClass + ")");
-                        !s.hasClass(T.params.lazyLoadingClass) || s.hasClass(T.params.lazyStatusLoadedClass) || s.hasClass(T.params.lazyStatusLoadingClass) || (i = i.add(s[0])), 0 !== i.length && i.each(function () {
-                            var a = e(this);
-                            a.addClass(T.params.lazyStatusLoadingClass);
-                            var i = a.attr("data-background"),
-                                r = a.attr("data-src"),
-                                n = a.attr("data-srcset"),
-                                o = a.attr("data-sizes");
-                            T.loadImage(a[0], r || i, n, o, !1, function () {
-                                if (void 0 !== T && null !== T && T) {
-                                    if (i ? (a.css("background-image", 'url("' + i + '")'), a.removeAttr("data-background")) : (n && (a.attr("srcset", n), a.removeAttr("data-srcset")), o && (a.attr("sizes", o), a.removeAttr("data-sizes")), r && (a.attr("src", r), a.removeAttr("data-src"))), a.addClass(T.params.lazyStatusLoadedClass).removeClass(T.params.lazyStatusLoadingClass), s.find("." + T.params.lazyPreloaderClass + ", ." + T.params.preloaderClass).remove(), T.params.loop && t) {
-                                        var e = s.attr("data-swiper-slide-index");
-                                        if (s.hasClass(T.params.slideDuplicateClass)) {
-                                            var l = T.wrapper.children('[data-swiper-slide-index="' + e + '"]:not(.' + T.params.slideDuplicateClass + ")");
-                                            T.lazy.loadImageInSlide(l.index(), !1)
-                                        } else {
-                                            var p = T.wrapper.children("." + T.params.slideDuplicateClass + '[data-swiper-slide-index="' + e + '"]');
-                                            T.lazy.loadImageInSlide(p.index(), !1)
-                                        }
-                                    }
-                                    T.emit("onLazyImageReady", T, s[0], a[0])
-                                }
-                            }), T.emit("onLazyImageLoad", T, s[0], a[0])
-                        })
-                    }
-                },
                 load: function () {
                     var a, t = T.params.slidesPerView;
                     if ("auto" === t && (t = 0), T.lazy.initialImageLoaded || (T.lazy.initialImageLoaded = !0), T.params.watchSlidesVisibility) T.wrapper.children("." + T.params.slideVisibleClass).each(function () {
@@ -1207,10 +959,6 @@
                             }
                         } else T.slideTo(0, e, t)
                 }
-            }, T.disableKeyboardControl = function () {
-                T.params.keyboardControl = !1, e(document).off("keydown", p)
-            }, T.enableKeyboardControl = function () {
-                T.params.keyboardControl = !0, e(document).on("keydown", p)
             }, T.mousewheel = {
                 event: !1,
                 lastScrollTime: (new window.Date).getTime()
@@ -1246,137 +994,6 @@
                             s = parseInt(t.attr("data-swiper-parallax-duration"), 10) || a;
                         0 === a && (s = 0), t.transition(s)
                     })
-                }
-            }, T.zoom = {
-                scale: 1,
-                currentScale: 1,
-                isScaling: !1,
-                gesture: {
-                    slide: void 0,
-                    slideWidth: void 0,
-                    slideHeight: void 0,
-                    image: void 0,
-                    imageWrap: void 0,
-                    zoomMax: T.params.zoomMax
-                },
-                image: {
-                    isTouched: void 0,
-                    isMoved: void 0,
-                    currentX: void 0,
-                    currentY: void 0,
-                    minX: void 0,
-                    minY: void 0,
-                    maxX: void 0,
-                    maxY: void 0,
-                    width: void 0,
-                    height: void 0,
-                    startX: void 0,
-                    startY: void 0,
-                    touchesStart: {},
-                    touchesCurrent: {}
-                },
-                velocity: {
-                    x: void 0,
-                    y: void 0,
-                    prevPositionX: void 0,
-                    prevPositionY: void 0,
-                    prevTime: void 0
-                },
-                getDistanceBetweenTouches: function (e) {
-                    if (e.targetTouches.length < 2) return 1;
-                    var a = e.targetTouches[0].pageX,
-                        t = e.targetTouches[0].pageY,
-                        s = e.targetTouches[1].pageX,
-                        i = e.targetTouches[1].pageY;
-                    return Math.sqrt(Math.pow(s - a, 2) + Math.pow(i - t, 2))
-                },
-                onGestureStart: function (a) {
-                    var t = T.zoom;
-                    if (!T.support.gestures) {
-                        if ("touchstart" !== a.type || "touchstart" === a.type && a.targetTouches.length < 2) return;
-                        t.gesture.scaleStart = t.getDistanceBetweenTouches(a)
-                    }
-                    if (!(t.gesture.slide && t.gesture.slide.length || (t.gesture.slide = e(this), 0 === t.gesture.slide.length && (t.gesture.slide = T.slides.eq(T.activeIndex)), t.gesture.image = t.gesture.slide.find("img, svg, canvas"), t.gesture.imageWrap = t.gesture.image.parent("." + T.params.zoomContainerClass), t.gesture.zoomMax = t.gesture.imageWrap.attr("data-swiper-zoom") || T.params.zoomMax, 0 !== t.gesture.imageWrap.length))) return void(t.gesture.image = void 0);
-                    t.gesture.image.transition(0), t.isScaling = !0
-                },
-                onGestureChange: function (e) {
-                    var a = T.zoom;
-                    if (!T.support.gestures) {
-                        if ("touchmove" !== e.type || "touchmove" === e.type && e.targetTouches.length < 2) return;
-                        a.gesture.scaleMove = a.getDistanceBetweenTouches(e)
-                    }
-                    a.gesture.image && 0 !== a.gesture.image.length && (T.support.gestures ? a.scale = e.scale * a.currentScale : a.scale = a.gesture.scaleMove / a.gesture.scaleStart * a.currentScale, a.scale > a.gesture.zoomMax && (a.scale = a.gesture.zoomMax - 1 + Math.pow(a.scale - a.gesture.zoomMax + 1, .5)), a.scale < T.params.zoomMin && (a.scale = T.params.zoomMin + 1 - Math.pow(T.params.zoomMin - a.scale + 1, .5)), a.gesture.image.transform("translate3d(0,0,0) scale(" + a.scale + ")"))
-                },
-                onGestureEnd: function (e) {
-                    var a = T.zoom;
-                    !T.support.gestures && ("touchend" !== e.type || "touchend" === e.type && e.changedTouches.length < 2) || a.gesture.image && 0 !== a.gesture.image.length && (a.scale = Math.max(Math.min(a.scale, a.gesture.zoomMax), T.params.zoomMin), a.gesture.image.transition(T.params.speed).transform("translate3d(0,0,0) scale(" + a.scale + ")"), a.currentScale = a.scale, a.isScaling = !1, 1 === a.scale && (a.gesture.slide = void 0))
-                },
-                onTouchStart: function (e, a) {
-                    var t = e.zoom;
-                    t.gesture.image && 0 !== t.gesture.image.length && (t.image.isTouched || ("android" === e.device.os && a.preventDefault(), t.image.isTouched = !0, t.image.touchesStart.x = "touchstart" === a.type ? a.targetTouches[0].pageX : a.pageX, t.image.touchesStart.y = "touchstart" === a.type ? a.targetTouches[0].pageY : a.pageY))
-                },
-                onTouchMove: function (e) {
-                    var a = T.zoom;
-                    if (a.gesture.image && 0 !== a.gesture.image.length && (T.allowClick = !1, a.image.isTouched && a.gesture.slide)) {
-                        a.image.isMoved || (a.image.width = a.gesture.image[0].offsetWidth, a.image.height = a.gesture.image[0].offsetHeight, a.image.startX = T.getTranslate(a.gesture.imageWrap[0], "x") || 0, a.image.startY = T.getTranslate(a.gesture.imageWrap[0], "y") || 0, a.gesture.slideWidth = a.gesture.slide[0].offsetWidth, a.gesture.slideHeight = a.gesture.slide[0].offsetHeight, a.gesture.imageWrap.transition(0), T.rtl && (a.image.startX = -a.image.startX), T.rtl && (a.image.startY = -a.image.startY));
-                        var t = a.image.width * a.scale,
-                            s = a.image.height * a.scale;
-                        if (!(t < a.gesture.slideWidth && s < a.gesture.slideHeight)) {
-                            if (a.image.minX = Math.min(a.gesture.slideWidth / 2 - t / 2, 0), a.image.maxX = -a.image.minX, a.image.minY = Math.min(a.gesture.slideHeight / 2 - s / 2, 0), a.image.maxY = -a.image.minY, a.image.touchesCurrent.x = "touchmove" === e.type ? e.targetTouches[0].pageX : e.pageX, a.image.touchesCurrent.y = "touchmove" === e.type ? e.targetTouches[0].pageY : e.pageY, !a.image.isMoved && !a.isScaling) {
-                                if (T.isHorizontal() && Math.floor(a.image.minX) === Math.floor(a.image.startX) && a.image.touchesCurrent.x < a.image.touchesStart.x || Math.floor(a.image.maxX) === Math.floor(a.image.startX) && a.image.touchesCurrent.x > a.image.touchesStart.x) return void(a.image.isTouched = !1);
-                                if (!T.isHorizontal() && Math.floor(a.image.minY) === Math.floor(a.image.startY) && a.image.touchesCurrent.y < a.image.touchesStart.y || Math.floor(a.image.maxY) === Math.floor(a.image.startY) && a.image.touchesCurrent.y > a.image.touchesStart.y) return void(a.image.isTouched = !1)
-                            }
-                            e.preventDefault(), e.stopPropagation(), a.image.isMoved = !0, a.image.currentX = a.image.touchesCurrent.x - a.image.touchesStart.x + a.image.startX, a.image.currentY = a.image.touchesCurrent.y - a.image.touchesStart.y + a.image.startY, a.image.currentX < a.image.minX && (a.image.currentX = a.image.minX + 1 - Math.pow(a.image.minX - a.image.currentX + 1, .8)), a.image.currentX > a.image.maxX && (a.image.currentX = a.image.maxX - 1 + Math.pow(a.image.currentX - a.image.maxX + 1, .8)), a.image.currentY < a.image.minY && (a.image.currentY = a.image.minY + 1 - Math.pow(a.image.minY - a.image.currentY + 1, .8)), a.image.currentY > a.image.maxY && (a.image.currentY = a.image.maxY - 1 + Math.pow(a.image.currentY - a.image.maxY + 1, .8)), a.velocity.prevPositionX || (a.velocity.prevPositionX = a.image.touchesCurrent.x), a.velocity.prevPositionY || (a.velocity.prevPositionY = a.image.touchesCurrent.y), a.velocity.prevTime || (a.velocity.prevTime = Date.now()), a.velocity.x = (a.image.touchesCurrent.x - a.velocity.prevPositionX) / (Date.now() - a.velocity.prevTime) / 2, a.velocity.y = (a.image.touchesCurrent.y - a.velocity.prevPositionY) / (Date.now() - a.velocity.prevTime) / 2, Math.abs(a.image.touchesCurrent.x - a.velocity.prevPositionX) < 2 && (a.velocity.x = 0), Math.abs(a.image.touchesCurrent.y - a.velocity.prevPositionY) < 2 && (a.velocity.y = 0), a.velocity.prevPositionX = a.image.touchesCurrent.x, a.velocity.prevPositionY = a.image.touchesCurrent.y, a.velocity.prevTime = Date.now(), a.gesture.imageWrap.transform("translate3d(" + a.image.currentX + "px, " + a.image.currentY + "px,0)")
-                        }
-                    }
-                },
-                onTouchEnd: function (e, a) {
-                    var t = e.zoom;
-                    if (t.gesture.image && 0 !== t.gesture.image.length) {
-                        if (!t.image.isTouched || !t.image.isMoved) return t.image.isTouched = !1, void(t.image.isMoved = !1);
-                        t.image.isTouched = !1, t.image.isMoved = !1;
-                        var s = 300,
-                            i = 300,
-                            r = t.velocity.x * s,
-                            n = t.image.currentX + r,
-                            o = t.velocity.y * i,
-                            l = t.image.currentY + o;
-                        0 !== t.velocity.x && (s = Math.abs((n - t.image.currentX) / t.velocity.x)), 0 !== t.velocity.y && (i = Math.abs((l - t.image.currentY) / t.velocity.y));
-                        var p = Math.max(s, i);
-                        t.image.currentX = n, t.image.currentY = l;
-                        var d = t.image.width * t.scale,
-                            u = t.image.height * t.scale;
-                        t.image.minX = Math.min(t.gesture.slideWidth / 2 - d / 2, 0), t.image.maxX = -t.image.minX, t.image.minY = Math.min(t.gesture.slideHeight / 2 - u / 2, 0), t.image.maxY = -t.image.minY, t.image.currentX = Math.max(Math.min(t.image.currentX, t.image.maxX), t.image.minX), t.image.currentY = Math.max(Math.min(t.image.currentY, t.image.maxY), t.image.minY), t.gesture.imageWrap.transition(p).transform("translate3d(" + t.image.currentX + "px, " + t.image.currentY + "px,0)")
-                    }
-                },
-                onTransitionEnd: function (e) {
-                    var a = e.zoom;
-                    a.gesture.slide && e.previousIndex !== e.activeIndex && (a.gesture.image.transform("translate3d(0,0,0) scale(1)"), a.gesture.imageWrap.transform("translate3d(0,0,0)"), a.gesture.slide = a.gesture.image = a.gesture.imageWrap = void 0, a.scale = a.currentScale = 1)
-                },
-                toggleZoom: function (a, t) {
-                    var s = a.zoom;
-                    if (s.gesture.slide || (s.gesture.slide = a.clickedSlide ? e(a.clickedSlide) : a.slides.eq(a.activeIndex), s.gesture.image = s.gesture.slide.find("img, svg, canvas"), s.gesture.imageWrap = s.gesture.image.parent("." + a.params.zoomContainerClass)), s.gesture.image && 0 !== s.gesture.image.length) {
-                        var i, r, n, o, l, p, d, u, c, m, h, g, f, v, w, y, x, T;
-                        void 0 === s.image.touchesStart.x && t ? (i = "touchend" === t.type ? t.changedTouches[0].pageX : t.pageX, r = "touchend" === t.type ? t.changedTouches[0].pageY : t.pageY) : (i = s.image.touchesStart.x, r = s.image.touchesStart.y), s.scale && 1 !== s.scale ? (s.scale = s.currentScale = 1, s.gesture.imageWrap.transition(300).transform("translate3d(0,0,0)"), s.gesture.image.transition(300).transform("translate3d(0,0,0) scale(1)"), s.gesture.slide = void 0) : (s.scale = s.currentScale = s.gesture.imageWrap.attr("data-swiper-zoom") || a.params.zoomMax, t ? (x = s.gesture.slide[0].offsetWidth, T = s.gesture.slide[0].offsetHeight, n = s.gesture.slide.offset().left, o = s.gesture.slide.offset().top, l = n + x / 2 - i, p = o + T / 2 - r, c = s.gesture.image[0].offsetWidth, m = s.gesture.image[0].offsetHeight, h = c * s.scale, g = m * s.scale, f = Math.min(x / 2 - h / 2, 0), v = Math.min(T / 2 - g / 2, 0), w = -f, y = -v, d = l * s.scale, u = p * s.scale, d < f && (d = f), d > w && (d = w), u < v && (u = v), u > y && (u = y)) : (d = 0, u = 0), s.gesture.imageWrap.transition(300).transform("translate3d(" + d + "px, " + u + "px,0)"), s.gesture.image.transition(300).transform("translate3d(0,0,0) scale(" + s.scale + ")"))
-                    }
-                },
-                attachEvents: function (a) {
-                    var t = a ? "off" : "on";
-                    if (T.params.zoom) {
-                        var s = (T.slides, !("touchstart" !== T.touchEvents.start || !T.support.passiveListener || !T.params.passiveListeners) && {
-                            passive: !0,
-                            capture: !1
-                        });
-                        T.support.gestures ? (T.slides[t]("gesturestart", T.zoom.onGestureStart, s), T.slides[t]("gesturechange", T.zoom.onGestureChange, s), T.slides[t]("gestureend", T.zoom.onGestureEnd, s)) : "touchstart" === T.touchEvents.start && (T.slides[t](T.touchEvents.start, T.zoom.onGestureStart, s), T.slides[t](T.touchEvents.move, T.zoom.onGestureChange, s), T.slides[t](T.touchEvents.end, T.zoom.onGestureEnd, s)), T[t]("touchStart", T.zoom.onTouchStart), T.slides.each(function (a, s) {
-                            e(s).find("." + T.params.zoomContainerClass).length > 0 && e(s)[t](T.touchEvents.move, T.zoom.onTouchMove)
-                        }), T[t]("touchEnd", T.zoom.onTouchEnd), T[t]("transitionEnd", T.zoom.onTransitionEnd), T.params.zoomToggle && T.on("doubleTap", T.zoom.toggleZoom)
-                    }
-                },
-                init: function () {
-                    T.zoom.attachEvents()
-                },
-                destroy: function () {
-                    T.zoom.attachEvents(!0)
                 }
             }, T._plugins = [];
             for (var Y in T.plugins) {
