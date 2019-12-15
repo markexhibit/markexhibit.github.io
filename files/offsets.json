@@ -1,0 +1,21 @@
+{
+    "addresses" : {
+         "throwMult": "1236F1C",
+         "maxThrowSpeed": "1236DD8",
+         "discCurve":"1236DD0"
+     },
+     "pointers":{
+         "pushSpeed":["01D62418","8B0","520","5C0","1F8","78","107C"],
+         "grabDistance":["01D411B8","AC0","28","590","C40","160","AE54"],
+         "speedBoostMax":["01D62418","8B0","520","5C0","1F8","78","F84"],
+         "speedBoostAccel":["01D62418","8B0","520","5C0","1F8","78","F88"],
+         "twoHandIronman":["01D62418","8B0","520","5C0","1F8","78","FDC"],
+         "leftPunchRadius":["01D62418","8B0","5D0","8C0","F0","390"],
+         "rightPunchRadius":["01D62418","8B0","5D0","8C0","F0","394"],
+         "train":["01D3DB20","E0","5B0","A40","E8","318","D20"]
+     },
+     "modValues":[1.4,21,1],
+     "defaults":[1,19,0],
+     "pointerDefaults":[4,0.25,5,10,2,0.06,0.06,4.65],
+     "pointerMods":[7,0.4,10,15,3.6,0.06,0.06,10]
+}
