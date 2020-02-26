@@ -4,8 +4,7 @@
 	<title>Aviation</title>
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<link href="css/projectStyling.css" rel="stylesheet" type="text/css">
-	<link href="css/featherlight.css" type="text/css" rel="stylesheet" />
-	<link type="text/css" media="all" href="css/fonts.css" rel="stylesheet" />
+	<link href="css/featherlight.min.css" type="text/css" rel="stylesheet" />
 	<script src="js/jquery.min.js"></script>
 	<script src="js/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/lottie.js"></script>
@@ -15,10 +14,8 @@
 <body id="page-top">
 	<header class="site-header">
 		<div class="normal-container">
-			<div class="logo">
-				<a href="http://www.markputong.com/" class="navLink">WORK</a>
-				<a href="http://www.markputong.com/contact" style="margin-left:20px" class="navLink">CONTACT</a>
-			</div>
+			<a href="http://www.markputong.com/" class="navLink">WORK</a>
+			<a href="http://www.markputong.com/contact" style="margin-left:20px" class="navLink">CONTACT</a>
 		</div>
 	</header>
 
@@ -134,6 +131,9 @@
 							They work with multiple areas of the hangar, in those areas usually are multiple bays where separate work is being done. 
 							We decided we would give them this overview of the work scheduled in each area and clicking into an area would expand it to allow for the bays schedules to be accessed better.
 						</p>
+					<div id="bayAnim" class="gal-image">
+
+					</div>
 					</div>
 					<div class="gal-image">
 						<img data-featherlight="aviation/images/Aviation-Exp-4_output.png" src="aviation/images/Aviation-Exp-4_output.png" class="hidden">
@@ -146,17 +146,21 @@
 		<i class="fa fa-angle-up"></i>
 	</a>
 <script>
-
+	lottie.loadAnimation({
+		container: document.getElementById('bayAnim'),
+		renderer: 'svg',
+		loop: true,
+		autoplay: true,
+		path: 'aviation/bay.json'
+	});
 	$(window).scroll(function () {
 		var scrolled = $(this).scrollTop();
 		var interval = 0;
 		
-		$('.gal-image').each(function () 
-		{
+		$('.gal-image').each(function () {
 			var startToShow = $(this).offset().top + $(this).outerHeight()/3; //fires when a third of the div appears, change the 3 to experiment with different positions
 			var bottomOfWindow = $(window).scrollTop() + $(window).height();
-			if (bottomOfWindow > startToShow)
-			{
+			if(bottomOfWindow > startToShow) {
 				var test = Math.floor(Math.random() * 700 + 500) + "ms";
 				$(this).css('animation-durtion',test )
 				$(this).addClass('reveal');
