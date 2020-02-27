@@ -463,16 +463,14 @@ p {
 	align-items: center
 }
 .normal-container {
-	padding-left: 50px;
-	padding-right: 50px
+	padding:1.5rem; 
 }
 @media (max-width:1200px) {
 	.site-header {
 		padding: 0
 	}
 	.normal-container {
-		padding-left: 30px;
-		padding-right: 30px
+		padding: 1.5rem;
 	}
 }
 @media (max-width:767px) {
