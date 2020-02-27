@@ -26,9 +26,7 @@ function watershed(){
         cv.findContours(gray, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
         
         let struct = []
-        contours.forEach(function(c){
-           
-        });
+       
 
         for (let i = 0; i < contours.size(); ++i) {
             let cColor = new cv.Scalar(255,255,255);
@@ -42,11 +40,6 @@ function watershed(){
             }
             cv.drawContours(dst, contours, i, cColor, 1, cv.LINE_8, hierarchy, 100);
         }
-        struct.forEach(function(c){
-           
-        });
-
-
 
         cv.bitwise_not(dst, dst)
         cv.imshow('canvasOutput', dst);
