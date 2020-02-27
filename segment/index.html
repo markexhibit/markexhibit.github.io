@@ -27,7 +27,7 @@ function watershed(){
         
         let struct = []
         contours.forEach(function(c){
-           if(c)
+           
         });
 
         for (let i = 0; i < contours.size(); ++i) {
@@ -35,7 +35,7 @@ function watershed(){
             let rect = cv.boundingRect(contours.get(i))
             if(rect.width > src.cols*0.05 || rect.height > 15){
                 struct.push([rect.x,rect.y,rect.x + rect.width,rect.y + rect.height])
-                //makeRect(rect)
+                makeRect(rect)
             }
             else{
                 console.log('Too Small')
@@ -43,7 +43,7 @@ function watershed(){
             cv.drawContours(dst, contours, i, cColor, 1, cv.LINE_8, hierarchy, 100);
         }
         struct.forEach(function(c){
-           if(c)
+           
         });
 
 
